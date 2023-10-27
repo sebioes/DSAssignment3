@@ -36,11 +36,11 @@ In addition to Spark, in this assignment, you will also use the _Hadoop Distribu
 
 Follow the steps below to set up Hadoop on your machine:
 *Note*: _MasterIP_ is the IP address of your local machine. Please update this address if you switch network or devices.
-1. Download jdk-8u381 (https://www.oracle.com/java/technologies/downloads/#java8-linux) and install it. Do not set it to the path.
-2. Download Hadoop 3.3.1 (https://hadoop.apache.org/release/3.3.1.html) extract and place it in ```c:\``` or equivalent location ```/usr/local/``` choose the location as you want but keep it safe :) .
+1. Download jdk-8u381 (https://www.oracle.com/java/technologies/downloads/#java8-linux or https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html) and install it. Do not set it to the path.
+2. Download Hadoop 3.3.1, 64 or 32 bit version depending on your local system (https://hadoop.apache.org/release/3.3.1.html). Extract and place it in ```c:\``` or equivalent location ```/usr/local/``` choose the location as you want but keep it safe :) .
 3. (Not for MacOS/Linux) For Windows users, please extract the bin folder from files-required-hadoop-windows folder and replace the original bin folder of Hadoop.
 4. Copy the files from hadoop-config-files folder and replace existing files in the ```etc/hadoop``` folder. Here, please edit ```core-site.xml``` file to add your local machine's IP address instead of MasterIP. Keep this address updated if you change the network or devices.
-5. Create two directories outside or in the hadoop folder *\data\dfs\datanode* and *\data\dfs\datanode* and update the *hdfs-site.xml* configuration as follows:
+5. Create two directories outside or in the hadoop folder *\data\dfs\namenode* and *\data\dfs\datanode* and update the *hdfs-site.xml* configuration as follows:
 
 ###### Windows
 ```xml
@@ -55,11 +55,11 @@ Follow the steps below to set up Hadoop on your machine:
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>
-        <value>file:///C:/path/to/data/dfs/namenode</value>
+        <value>file:///path/to/data/dfs/namenode</value>
     </property>
     <property>
         <name>dfs.datanode.data.dir</name>
-        <value>file:///C:/path/to/data/dfs/datanode</value>
+        <value>file:///path/to/data/dfs/datanode</value>
     </property>
 </configuration>
 
@@ -78,11 +78,11 @@ Follow the steps below to set up Hadoop on your machine:
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>
-        <value>/Users/username/hdfs/data/dfs/namenode</value>
+        <value>/path/to/data/dfs/namenode</value>
     </property>
     <property>
         <name>dfs.datanode.data.dir</name>
-        <value>/Users/username/hdfs/data/dfs/datanode</value>
+        <value>/path/to/data/dfs/datanode</value>
     </property>
 </configuration>
 ```
@@ -90,7 +90,7 @@ Follow the steps below to set up Hadoop on your machine:
 6. Add the following paths and variables into your machine's environment to execute the hadoop commands from your terminal. Note you have to set ```HADOOP_HOME``` to the folder where you installed Hadoop in Step 2.
 ###### MacOS
 ```bash
-export HADOOP_HOME=/path/to/hadoop-3.3.1/ 
+export HADOOP_HOME=/path/to/hadoop-3.3.1
 export HADOOP_INSTALL=$HADOOP_HOME 
 export HADOOP_MAPRED_HOME=$HADOOP_HOME 
 export HADOOP_COMMON_HOME=$HADOOP_HOME 
@@ -107,8 +107,8 @@ path\to\hadoop-3.1.1\bin
 path\to\hadoop-3.1.1\sbin  
 ```
 7. Now open a terminal (or stay in the same one if you are already there 🙂). Check ```hadoop -version``` or ```hadoop version```, it would show the java version 1.8 or the Hadoop version 3.1.1 that we added to hadoop environment.
-8. Please turn on the remote login for your machine (grant all file access).
-9. Let's start Hadoop. To do this format the directory that you created for host your files _namenode_,
+8. Please turn on the remote login for your machine (grant all file access). Helpful links https://support.microsoft.com/en-us/windows/how-to-use-remote-desktop-5fe128d5-8fb1-7a23-3b8a-41e636865e8c#:~:text=When%20you're%20ready%2C%20select%20Start%20%3E%20Settings%20%3E%20System,turn%20on%20Enable%20Remote%20Desktop, https://support.apple.com/en-gb/guide/mac-help/mchlp1066/mac#:~:text=Set%20up%20Remote%20Login%20on,disk%20access%20for%20remote%20users.%E2%80%9D.
+9. Let's start Hadoop. To do this format the directory that you created to host your files _namenode_,
 ```bash
 hdfs namenode -format
 ```
@@ -141,22 +141,24 @@ hdfs dfs -rm -r /path/to/folder
 
 
 ## Setup SSH Passwordless
-For Linux this tutorial https://scott-ralph.medium.com/creating-an-apache-spark-cluster-with-raspberry-pi-workers-472c2c9a19ce might help.
+For Linux (and MacOS) this tutorial https://scott-ralph.medium.com/creating-an-apache-spark-cluster-with-raspberry-pi-workers-472c2c9a19ce might help.
+
 For MacOS this tutorial https://medium.com/@anirudhtulasi.x/how-to-set-up-password-less-ssh-for-localhost-on-macos-e54fff167169 might help.
-For Windows 11, here are some steps (and https://winscp.net/eng/docs/guide_windows_openssh_server might help.):
+
+For Windows, here are some steps (and https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse?tabs=gui  and for passwordless https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement might help.):
 1. Go to Settings > Apps > Optional features and click on View features.
 2. Locate “OpenSSH server” feature, select it, click Next, and then click Install.
 3. Open the Services desktop app. (Select Start, type services.msc in the search box, and then select the Service app or press ENTER.)
 4. In the details pane, double-click OpenSSH SSH Server.
 5. On the General tab, from the Startup type drop-down menu, select Automatic.
 6. To start the service, select Start.
-7. Create a new file called authorized keys in "c:\Users\USER\.ssh\authorized_keys"
+7. Create a new file called authorized keys in "c:\Users\USER\\.ssh\authorized_keys"
 8. Copy the contents of your public key into this file.
 9. Uncomment the line "PubkeyAuthentication yes" on this file "C:\ProgramData\ssh\sshd_config"
 
 ## Spark Setup
 
-*Note* Please check your JAVA_HOME and set Java 17 as JAVA_HOME in your environment, if it is not already set. 
+*Note* Please check your JAVA_HOME and set Java 17 as JAVA_HOME in your environment, if it is not already set.
 
 1. Download spark-3.5.0-bin-hadoop3 from [https://spark.apache.org/downloads.html](https://spark.apache.org/downloads.html) and extract the spark directory containing bin and sbin folders
 2. Set the path,
@@ -205,6 +207,8 @@ spark-submit --class com.assignment3.spark.WordCount  app/build/libs/app.jar
 spark-submit --class com.assignment3.spark.WordCount  app/build/libs/app.jar
 ```
 2. Test your output (optional)
+
+###### on MacOS:
 ```bash
 ./gradlew build
 ./gradlew run -PchooseMain=com.assignment3.spark.CheckOutput --args="path/to/given/output.txt /path/to/your/output.txt"
@@ -220,7 +224,7 @@ spark-submit --class com.assignment3.spark.WordCount  app/build/libs/app.jar
 
 #### Create a single node Spark cluster using Raspberry Pi
 
-1. Format Raspberry Pi with Raspberry Pi OS (32 bit) Released 03-05-2023 or later. 
+1. Format Raspberry Pi with Raspberry Pi OS (32 bit) Released 03-05-2023 or later.
    During the setup, please make sure the ***username of the RPi is same as the username on your local machine***. It is important for the workers in order to make request on _just_ the given IP address.
 
 ##### Setup Raspberry Pi (Worker)
@@ -335,7 +339,7 @@ scp $USER@IP:main.c main.c
 
 ### 6. Set up public key authentication for password-less communication between the master and the worker
 you can set up a public key authentication to save some time to type the password each time you need to SSH to the Pi. Knowing how to set up key-based authentication is a valuable skill that you will need many times in the years to come - hence, go for this! To do it, follow this guide: https://www.ssh.com/academy/ssh/authorized-keys-openssh
-or 
+or
 Follow this tutorial https://www.strongdm.com/blog/ssh-passwordless-login
 
 You can optionally assign static IP to your Raspberry Pi if you switch the devices or networks often, https://raspberrypi-guide.github.io/networking/set-up-static-ip-address
@@ -355,7 +359,7 @@ scp path/to/the/file username@ip:path/to/destination/folder
 5. Coming back to the RPi terminal, extract the Spark installation package
 
 ```bash
-tar vxf ~/Downloads/spark-3.4.1-bin-hadoop3.tgz
+tar vxf ~/Downloads/spark-3.5.0-bin-hadoop3.tgz
 ```
 
 6. Set the path to the bin folder of the spark package
@@ -365,8 +369,8 @@ nano ~/.bashrc
 ```
 add following paths
 ```bash
-export PATH="$PATH:/path/to/spark-3.4.1-bin-hadoop3/bin"
-export PATH="$PATH:/path/to/spark-3.4.1-bin-hadoop3/sbin"
+export PATH="$PATH:/path/to/spark-3.5.0-bin-hadoop3/bin"
+export PATH="$PATH:/path/to/spark-3.5.0-bin-hadoop3/sbin"
 ```
 
 7. Install Java 17 on Raspberry Pi (Spark supports this version better than the newer Java 21)
@@ -375,7 +379,7 @@ export PATH="$PATH:/path/to/spark-3.4.1-bin-hadoop3/sbin"
 sudo apt-get install openjdk-17-jdk -y
 ```
 
-8. Check your Java version, it should be 17.0.* 
+8. Check your Java version, it should be 17.0.*
 
 ```bash
 java --version
@@ -395,22 +399,22 @@ Please go ahead and look at the UI through a web browser on your local machine. 
 
 #### Modify and run the Spark environment on your local machine (Master) ***Note*** step 11 is only for MacOS or Linux
 11 a. Add workers to the environment **for MacOS**
- convert the workers.template file to workers file (by using notepad/other text editors on *Windows*)
+convert the workers.template file to workers file (by using notepad/other text editors on *Windows*)
 ###### MacOS
 ```bash
    nano /path/to/spark-3.5.0-bin-hadoop3/conf/workers.template
 ```
- add the ip address (example: 172.20.10.12) at the end of the file
- save the file and change the name to save it as workers in the conf directory
+add the ip address (example: 172.20.10.12) at the end of the file
+save the file and change the name to save it as workers in the conf directory
 
 
 11 b. Add master to the environment **for MacOS**
-  convert the spark-env.sh.template file to spark-env.sh file (by using notepad/other text editors on *Windows*)
+convert the spark-env.sh.template file to spark-env.sh file (by using notepad/other text editors on *Windows*)
 ###### MacOS
 ```bash
 nano /path/to/spark-3.5.0-bin-hadoop3/conf/spark-env.sh
 ```
-add 
+add
 ```bash
 export SPARK_MASTER_HOST="local_machine_IP (MasterIP)"
 ```
