@@ -31,8 +31,12 @@ public class WordCount {
     }
 
     public static void main(String[] args) {
-        String textFilePath = "/Users/nicolas.montani/Home/Code/Github/UNI/DS/DSAssignment3/tasks/input/pigs.txt"; // update to HDFS url for task2
-        SparkConf conf = new SparkConf().setAppName("WordCountWithSpark").setMaster("local[*]"); // task2: update the setMaster with your cluster master URL for executing this code on the cluster
+        //String textFilePath = "/Users/nicolas.montani/Home/Code/Github/UNI/DS/DSAssignment3/tasks/input/pigs.txt"; // update to HDFS url for task2
+        String textFilePath = "hdfs://172.20.10.2:9000/sparkApp/input/pigs.txt"; // update to HDFS url for task2
+
+        //SparkConf conf = new SparkConf().setAppName("WordCountWithSpark").setMaster("local[*]"); // task2: update the setMaster with your cluster master URL for executing this code on the cluster
+        SparkConf conf = new SparkConf().setAppName("WordCountWithSpark").setMaster("spark://172.20.10.2:9000"); // task2: update the setMaster with your cluster master URL for executing this code on the cluster
+
         JavaSparkContext sparkContext =  new JavaSparkContext(conf);
         JavaRDD<String> textFile = sparkContext.textFile(textFilePath);
         JavaRDD<String> words = textFile.flatMap(new Filter());
@@ -52,7 +56,7 @@ public class WordCount {
         //print to master terminal
         counts.foreach(e-> System.out.println(e));
         //output consolidation
-        counts.coalesce(1).saveAsTextFile("/Users/nicolas.montani/Home/Code/Github/UNI/DS/DSAssignment3/tasks/input/output-task1.txt");
+        counts.coalesce(1).saveAsTextFile("hdfs://172.20.10.2:9000/sparkApp/input/output.txt");
 
 
 
