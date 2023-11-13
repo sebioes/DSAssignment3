@@ -48,7 +48,9 @@ public class WordCount {
 
         JavaPairRDD<String, Integer> counts = words.mapToPair(word -> new Tuple2<>(word, 1)).reduceByKey((a, b) -> a + b);
         counts = counts.mapToPair(x -> x.swap()).sortByKey(false).mapToPair(x -> x.swap());
-        counts.saveAsTextFile("hdfs://172.20.10.2:9000/sparkApp/input/output.txt");
+        //counts.saveAsTextFile("hdfs://172.20.10.2:9000/sparkApp/input/output.txt");
+        //saves the partitions as one file
+        counts.coalesce(1).saveAsTextFile("hdfs://172.20.10.2:9000/sparkApp/input/output.txt")
 
 
 
