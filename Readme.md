@@ -90,7 +90,7 @@ Follow the steps below to set up Hadoop on your machine:
 6. Add the following paths and variables into your machine's environment to execute the hadoop commands from your terminal. Note you have to set ```HADOOP_HOME``` to the folder where you installed Hadoop in Step 2.
 ###### MacOS
 ```bash
-export HADOOP_HOME=/path/to/hadoop-3.3.1/ 
+export HADOOP_HOME=/path/to/hadoop-3.3.1
 export HADOOP_INSTALL=$HADOOP_HOME 
 export HADOOP_MAPRED_HOME=$HADOOP_HOME 
 export HADOOP_COMMON_HOME=$HADOOP_HOME 
@@ -207,6 +207,8 @@ spark-submit --class com.assignment3.spark.WordCount  app/build/libs/app.jar
 spark-submit --class com.assignment3.spark.WordCount  app/build/libs/app.jar
 ```
 2. Test your output (optional)
+
+###### on MacOS:
 ```bash
 ./gradlew build
 ./gradlew run -PchooseMain=com.assignment3.spark.CheckOutput --args="path/to/given/output.txt /path/to/your/output.txt"
@@ -357,7 +359,7 @@ scp path/to/the/file username@ip:path/to/destination/folder
 5. Coming back to the RPi terminal, extract the Spark installation package
 
 ```bash
-tar vxf ~/Downloads/spark-3.4.1-bin-hadoop3.tgz
+tar vxf ~/Downloads/spark-3.5.0-bin-hadoop3.tgz
 ```
 
 6. Set the path to the bin folder of the spark package
@@ -367,8 +369,8 @@ nano ~/.bashrc
 ```
 add following paths
 ```bash
-export PATH="$PATH:/path/to/spark-3.4.1-bin-hadoop3/bin"
-export PATH="$PATH:/path/to/spark-3.4.1-bin-hadoop3/sbin"
+export PATH="$PATH:/path/to/spark-3.5.0-bin-hadoop3/bin"
+export PATH="$PATH:/path/to/spark-3.5.0-bin-hadoop3/sbin"
 ```
 
 7. Install Java 17 on Raspberry Pi (Spark supports this version better than the newer Java 21)
