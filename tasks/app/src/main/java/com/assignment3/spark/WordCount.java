@@ -21,9 +21,7 @@ public class WordCount {
     {
         @Override
         public Iterator<String> call(String s) {
-            /*
-             * add your code to filter words
-             */
+
             String[] subStrings = s.split("\\s+");
             return Arrays.asList(subStrings).iterator();
         }
@@ -41,14 +39,6 @@ public class WordCount {
         JavaRDD<String> textFile = sparkContext.textFile(textFilePath);
         JavaRDD<String> words = textFile.flatMap(new Filter());
 
-        /*
-         * add your code for key value mapping
-         *
-         * add your code to perform reduce on the given key value pairs
-         *
-         * print the word count and save the output in the format, e.g.,(in:15) to an 'output' folder (on HDFS for task 2)
-         * try to consolidate your output into single text file if you want to check your output against the given sample output
-         */
         //counts word occurrences using Spark's mapToPair and reduceByKey
         JavaPairRDD<String, Integer> counts = words.mapToPair(word -> new Tuple2<>(word, 1)).reduceByKey((a, b) -> a + b);
         //swaps key-value pairs, sorts by key in descending order, and swaps back
